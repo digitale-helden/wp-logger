@@ -30,5 +30,8 @@
   "require-dev": {
   },
   "autoload": {
+    "psr-4": {
+      "DigitaleHelden\\Logger\\": "src/"
+    }
   }
 }

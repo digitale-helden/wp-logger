@@ -1,6 +1,6 @@
 {
   "name": "digitale-helden/wp-logger",
-  "description": "A collection of common used PHP helper classes and functions",
+  "description": "Logger with GELF and log file rotation using monolog",
   "type": "library",
   "keywords": [
     "php",
@@ -25,9 +25,9 @@
     "vendor-dir": "lib/vendor"
   },
   "require": {
-    "php": ">=7.4.1"
-  },
-  "require-dev": {
+    "php": ">=7.4.1",
+    "graylog2/gelf-php": "^1.7",
+    "monolog/monolog": "^2.3"
   },
   "autoload": {
     "psr-4": {

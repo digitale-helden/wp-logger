@@ -7,7 +7,6 @@ try
     {
         function wp_logger($message = null, array $context = [])
         {
-            var_dump("loffer");
             if(!empty($message))
             {
                 return \DigitaleHelden\Logger\Logger::logger()->info($message, $context);

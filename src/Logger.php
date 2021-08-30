@@ -74,7 +74,6 @@ class Logger
     /**
      * @param $facility
      * @param array $options
-     * @return Logger|null
      * @throws Exception
      */
     public static function create($facility, array $options = [])
@@ -83,7 +82,6 @@ class Logger
         {
             self::$instance = new self($facility, $options);
         }
-        return self::$instance;
     }
 
 

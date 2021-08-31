@@ -21,7 +21,12 @@ class Logger
     /**
      * @const bool
      */
-    public const SESSION = 'SESSION';
+    public const BYPASS = 'BYPASS';
+
+    /**
+     * @const bool
+     */
+    public const SESSION_CREATE = 'SESSION_CREATE';
 
     /**
      * @const string
@@ -49,8 +54,9 @@ class Logger
     public $options =
     [
         self::HANDLER => 'gelf',
-        self::SESSION => true,
-        self::SESSION_NAME => '_uid'
+        self::BYPASS => false,
+        self::SESSION_CREATE => false,
+        self::SESSION_NAME => 'dh-uid'
     ];
 
 
@@ -59,7 +65,7 @@ class Logger
      * @param array $options
      * @throws Exception
      */
-    protected function __construct($facility, array $options = [])
+    public function __construct($facility, array $options = [])
     {
         $this->facility = $facility;
         $this->options = array_merge($this->options, $options);
@@ -127,7 +133,7 @@ class Logger
      */
     protected function init()
     {
-        if((bool)$this->options[self::SESSION])
+        if((bool)$this->options[self::SESSION_CREATE])
         {
             if(isset($_COOKIE) && !isset($_COOKIE[self::SESSION_NAME]))
             {
@@ -158,7 +164,12 @@ class Logger
      */
     public function debug($message, array $context = [])
     {
-        return self::$instance->logger->debug($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->debug($message, static::compile($context));
+        }
     }
 
 
@@ -169,7 +180,12 @@ class Logger
      */
     public function info($message, array $context = [])
     {
-        return self::$instance->logger->info($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->info($message, static::compile($context));
+        }
     }
 
 
@@ -180,7 +196,12 @@ class Logger
      */
     public function notice($message, array $context = [])
     {
-        return self::$instance->logger->notice($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->notice($message, static::compile($context));
+        }
     }
 
 
@@ -191,7 +212,12 @@ class Logger
      */
     public function warning($message, array $context = [])
     {
-        return self::$instance->logger->warning($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->warning($message, static::compile($context));
+        }
     }
 
 
@@ -202,7 +228,12 @@ class Logger
      */
     public function error($message, array $context = [])
     {
-        return self::$instance->logger->error($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->error($message, static::compile($context));
+        }
     }
 
 
@@ -213,7 +244,12 @@ class Logger
      */
     public function critical($message, array $context = [])
     {
-        return self::$instance->logger->critical($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->critical($message, static::compile($context));
+        }
     }
 
 
@@ -224,7 +260,12 @@ class Logger
      */
     public function alert($message, array $context = [])
     {
-        return self::$instance->logger->alert($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->alert($message, static::compile($context));
+        }
     }
 
 
@@ -235,7 +276,12 @@ class Logger
      */
     public function emergency($message, array $context = [])
     {
-        return self::$instance->logger->emergency($message, static::compile($context));
+        if($this->options[self::BYPASS])
+        {
+            return null;
+        }else{
+            return self::$instance->logger->emergency($message, static::compile($context));
+        }
     }
 
 
@@ -255,7 +301,7 @@ class Logger
             'file' => $origin['file'],
             'line' => $origin['line'],
         ];
-        if((bool)self::$instance->options[self::SESSION] && isset($_COOKIE[self::SESSION_NAME]))
+        if(isset($_COOKIE[self::SESSION_NAME]))
         {
             $context['uid'] = $_COOKIE[self::SESSION_NAME];
         }

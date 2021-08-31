@@ -5,7 +5,7 @@ try
     require_once dirname(__FILE__) . '/vendor/autoload.php';
     if(!function_exists('wp_logger'))
     {
-        function wp_logger($message = null, array $context = [])
+        function wp_logger($message = null, $context = null)
         {
             if(!empty($message))
             {

@@ -144,10 +144,10 @@ class Logger
 
 
     /**
-     * @return null
+     * @return Logger
      * @throws Exception
      */
-    public static function logger()
+    public static function logger(): Logger
     {
         if(is_null(self::$instance))
         {
@@ -159,10 +159,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function debug($message, array $context = [])
+    public function debug($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -175,10 +175,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function info($message, array $context = [])
+    public function info($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -191,10 +191,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function notice($message, array $context = [])
+    public function notice($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -207,10 +207,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function warning($message, array $context = [])
+    public function warning($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -223,10 +223,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function error($message, array $context = [])
+    public function error($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -239,10 +239,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function critical($message, array $context = [])
+    public function critical($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -255,10 +255,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function alert($message, array $context = [])
+    public function alert($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -271,10 +271,10 @@ class Logger
 
     /**
      * @param $message
-     * @param array $context
-     * @return mixed
+     * @param null $context
+     * @return null
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, $context = null)
     {
         if($this->options[self::BYPASS])
         {
@@ -289,9 +289,12 @@ class Logger
      * @param array|null $context
      * @return array
      */
-    protected static function compile($context)
+    protected static function compile(?array $context)
     {
-        $context = (array)$context;
+        if(!is_array($context))
+        {
+            $context = ['param' => (string)$context];
+        }
 
         $origin = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10)[1];
 

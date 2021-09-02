@@ -169,15 +169,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function debug($message, $context = null)
+    public function debug($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->debug($message, $this->compile($context));
+            $this->logger->debug($message, $this->compile($context));
         }
     }
 
@@ -185,15 +183,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function info($message, $context = null)
+    public function info($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->info($message, $this->compile($context));
+            $this->logger->info($message, $this->compile($context));
         }
     }
 
@@ -201,15 +197,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function notice($message, $context = null)
+    public function notice($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->notice($message, $this->compile($context));
+            $this->logger->notice($message, $this->compile($context));
         }
     }
 
@@ -217,15 +211,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function warning($message, $context = null)
+    public function warning($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->warning($message, $this->compile($context));
+            $this->logger->warning($message, $this->compile($context));
         }
     }
 
@@ -233,15 +225,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function error($message, $context = null)
+    public function error($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->error($message, $this->compile($context));
+            $this->logger->error($message, $this->compile($context));
         }
     }
 
@@ -249,15 +239,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function critical($message, $context = null)
+    public function critical($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->critical($message, $this->compile($context));
+            $this->logger->critical($message, $this->compile($context));
         }
     }
 
@@ -265,15 +253,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function alert($message, $context = null)
+    public function alert($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->alert($message, $this->compile($context));
+            $this->logger->alert($message, $this->compile($context));
         }
     }
 
@@ -281,15 +267,13 @@ class Logger
     /**
      * @param $message
      * @param null $context
-     * @return null
+     * @return void
      */
-    public function emergency($message, $context = null)
+    public function emergency($message, $context = null): void
     {
-        if($this->options[self::BYPASS])
+        if(!$this->options[self::BYPASS])
         {
-            return null;
-        }else{
-            return self::$instance->logger->emergency($message, $this->compile($context));
+            $this->logger->emergency($message, $this->compile($context));
         }
     }
 

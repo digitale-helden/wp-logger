@@ -144,6 +144,15 @@ class Logger
 
 
     /**
+     * @return bool
+     */
+    public static function initialized(): bool
+    {
+        return (!is_null(self::$instance)) ? true : false;
+    }
+
+
+    /**
      * @return Logger
      * @throws Exception
      */

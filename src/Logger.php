@@ -177,7 +177,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->debug($message, static::compile($context));
+            return self::$instance->logger->debug($message, $this->compile($context));
         }
     }
 
@@ -193,7 +193,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->info($message, static::compile($context));
+            return self::$instance->logger->info($message, $this->compile($context));
         }
     }
 
@@ -209,7 +209,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->notice($message, static::compile($context));
+            return self::$instance->logger->notice($message, $this->compile($context));
         }
     }
 
@@ -225,7 +225,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->warning($message, static::compile($context));
+            return self::$instance->logger->warning($message, $this->compile($context));
         }
     }
 
@@ -241,7 +241,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->error($message, static::compile($context));
+            return self::$instance->logger->error($message, $this->compile($context));
         }
     }
 
@@ -257,7 +257,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->critical($message, static::compile($context));
+            return self::$instance->logger->critical($message, $this->compile($context));
         }
     }
 
@@ -273,7 +273,7 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->alert($message, static::compile($context));
+            return self::$instance->logger->alert($message, $this->compile($context));
         }
     }
 
@@ -289,16 +289,16 @@ class Logger
         {
             return null;
         }else{
-            return self::$instance->logger->emergency($message, static::compile($context));
+            return self::$instance->logger->emergency($message, $this->compile($context));
         }
     }
 
 
     /**
      * @param array|null $context
-     * @return array
+     * @return array|string[]
      */
-    protected static function compile(?array $context)
+    protected function compile(?array $context): array
     {
         if(!is_array($context))
         {
@@ -312,12 +312,14 @@ class Logger
             'host' => ((isset($_SERVER) && isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : php_uname('n')),
             'file' => $origin['file'],
             'line' => $origin['line'],
+            'user' => (function_exists('get_current_user_id')) ? get_current_user_id() : 0,
+            'agent' => (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : 'cli'
         ];
-        if(isset($_COOKIE[self::SESSION_NAME]))
-        {
-            $context['uid'] = $_COOKIE[self::SESSION_NAME];
-        }
 
+        if(isset($_COOKIE[$this->options[self::SESSION_NAME]]))
+        {
+            $context['uid'] = $_COOKIE[$this->options[self::SESSION_NAME]];
+        }
         return $context;
     }
 

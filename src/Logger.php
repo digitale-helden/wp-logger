@@ -3,8 +3,9 @@
 namespace DigitaleHelden\Logger;
 
 use Gelf\Publisher;
-use Gelf\Transport\UdpTransport;
+use Monolog\ErrorHandler;
 use Monolog\Handler\GelfHandler;
+use Gelf\Transport\UdpTransport;
 use Monolog\Handler\RotatingFileHandler;
 
 /**
@@ -17,6 +18,21 @@ class Logger
      * @const string
      */
     public const HANDLER = 'HANDLER';
+
+    /**
+     * @const bool
+     */
+    public const ERROR_HANDLER = 'ERROR_HANDLER';
+
+    /**
+     * @const bool
+     */
+    public const EXCEPTION_HANDLER = 'EXCEPTION_HANDLER';
+
+    /**
+     * @const bool
+     */
+    public const FATAL_HANDLER = 'FATAL_HANDLER';
 
     /**
      * @const bool
@@ -54,6 +70,9 @@ class Logger
     public $options =
     [
         self::HANDLER => 'gelf',
+        self::ERROR_HANDLER => true,
+        self::EXCEPTION_HANDLER => false,
+        self::FATAL_HANDLER => true,
         self::BYPASS => false,
         self::SESSION_CREATE => false,
         self::SESSION_NAME => 'dh-uid'
@@ -72,6 +91,20 @@ class Logger
 
         $this->logger = new \Monolog\Logger($this->facility);
         $this->logger->pushHandler($this->createHandler());
+
+        $handler = new ErrorHandler($this->logger);
+        if($this->options[self::ERROR_HANDLER])
+        {
+            $handler->registerErrorHandler([], false, 32511);
+        }
+        if($this->options[self::EXCEPTION_HANDLER])
+        {
+            $handler->registerExceptionHandler([]);
+        }
+        if($this->options[self::FATAL_HANDLER])
+        {
+            $handler->registerFatalHandler();
+        }
 
         $this->init();
     }

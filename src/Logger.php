@@ -57,6 +57,11 @@ class Logger
     /**
      * @var null
      */
+    protected static $handler = null;
+
+    /**
+     * @var null
+     */
     public $logger = null;
 
     /**
@@ -92,18 +97,21 @@ class Logger
         $this->logger = new \Monolog\Logger($this->facility);
         $this->logger->pushHandler($this->createHandler());
 
-        $handler = new ErrorHandler($this->logger);
-        if($this->options[self::ERROR_HANDLER])
+        if(empty(self::$handler))
         {
-            $handler->registerErrorHandler([], false, 32511);
-        }
-        if($this->options[self::EXCEPTION_HANDLER])
-        {
-            $handler->registerExceptionHandler([]);
-        }
-        if($this->options[self::FATAL_HANDLER])
-        {
-            $handler->registerFatalHandler();
+            self::$handler = new ErrorHandler($this->logger);
+            if($this->options[self::ERROR_HANDLER])
+            {
+                self::$handler->registerErrorHandler([], false, 32511);
+            }
+            if($this->options[self::EXCEPTION_HANDLER])
+            {
+                self::$handler->registerExceptionHandler([]);
+            }
+            if($this->options[self::FATAL_HANDLER])
+            {
+                self::$handler->registerFatalHandler();
+            }
         }
 
         $this->init();

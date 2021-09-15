@@ -329,18 +329,32 @@ class Logger
         {
             $context = ['param' => (string)$context];
         }
-
+        $env = (defined('WP_ENV') && !empty(WP_ENV)) ? WP_ENV : '';
+        $user = (function_exists('get_current_user_id')) ? get_current_user_id() : 0;
         $origin = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10)[1];
-
+        $agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : 'cli';
+        $host = (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : '';
+        if(empty($host))
+        {
+            $host = (isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : '';
+        }
+        if(empty($host))
+        {
+            $host = (isset($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : '';
+        }
+        if(empty($host))
+        {
+            $host = php_uname('n');
+        }
         $context = $context +
         [
-            'host' => ((isset($_SERVER) && isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : php_uname('n')),
             'file' => $origin['file'],
             'line' => $origin['line'],
-            'user' => (function_exists('get_current_user_id')) ? get_current_user_id() : 0,
-            'agent' => (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : 'cli'
+            'user' => $user,
+            'env' => $env,
+            'host' => $host,
+            'agent' => $agent
         ];
-
         if(isset($_COOKIE[$this->options[self::SESSION_NAME]]))
         {
             $context['uid'] = $_COOKIE[$this->options[self::SESSION_NAME]];

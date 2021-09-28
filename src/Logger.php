@@ -208,16 +208,22 @@ class Logger
 
 
     /**
+     * @param $level
      * @param $message
      * @param $group
      * @param null $context
+     * @throws Exception
      */
-    public function trace($message, $group, $context = null): void
+    public function trace($level, $message, $group, $context = null): void
     {
         if(!$this->options[self::BYPASS])
         {
+            if(!method_exists($this, $level))
+            {
+                throw new Exception(sprintf('level: %s is not a valid log level', $level));
+            }
             $context = array_merge((array)$context, ['group' => $group]);
-            $this->logger->info($message, $this->compile($context));
+            $this->logger->{$level}($message, $this->compile($context));
         }
     }
 

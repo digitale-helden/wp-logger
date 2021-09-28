@@ -216,7 +216,7 @@ class Logger
     {
         if(!$this->options[self::BYPASS])
         {
-            $context = array_merge((array)$context, ['group' => $group];
+            $context = array_merge((array)$context, ['group' => $group]);
             $this->logger->info($message, $this->compile($context));
         }
     }

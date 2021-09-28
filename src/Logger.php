@@ -209,6 +209,21 @@ class Logger
 
     /**
      * @param $message
+     * @param $group
+     * @param null $context
+     */
+    public function trace($message, $group, $context = null): void
+    {
+        if(!$this->options[self::BYPASS])
+        {
+            $context = array_merge((array)$context, ['group' => $group];
+            $this->logger->info($message, $this->compile($context));
+        }
+    }
+
+
+    /**
+     * @param $message
      * @param null $context
      * @return void
      */

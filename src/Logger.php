@@ -213,7 +213,6 @@ class Logger
      * @param $group
      * @param null $context
      * @throws Exception
-     * @return void
      */
     public function trace($level, $message, $group, $context = null): void
     {
@@ -223,8 +222,12 @@ class Logger
             {
                 throw new Exception(sprintf('level: %s is not a valid log level', $level));
             }
-            $context = array_merge((array)$context, ['group' => $group]);
-            $this->logger->{$level}($message, $this->compile($context));
+            try
+            {
+                $context = array_merge((array)$context, ['group' => $group]);
+                $this->logger->{$level}($message, $this->compile($context));
+            }
+            catch(\Exception $e){}
         }
     }
 
@@ -236,10 +239,14 @@ class Logger
      */
     public function debug($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->debug($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->debug($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -250,10 +257,14 @@ class Logger
      */
     public function info($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->info($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->info($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -264,10 +275,14 @@ class Logger
      */
     public function notice($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->notice($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->notice($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -278,10 +293,14 @@ class Logger
      */
     public function warning($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->warning($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->warning($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -292,10 +311,14 @@ class Logger
      */
     public function error($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->error($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->error($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -306,10 +329,14 @@ class Logger
      */
     public function critical($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->critical($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->critical($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -320,10 +347,14 @@ class Logger
      */
     public function alert($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->alert($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->alert($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -334,10 +365,14 @@ class Logger
      */
     public function emergency($message, $context = null): void
     {
-        if(!$this->options[self::BYPASS])
+        try
         {
-            $this->logger->emergency($message, $this->compile($context));
+            if(!$this->options[self::BYPASS])
+            {
+                $this->logger->emergency($message, $this->compile($context));
+            }
         }
+        catch(\Exception $e){}
     }
 
 
@@ -377,9 +412,13 @@ class Logger
             'host' => $host,
             'agent' => $agent
         ];
-        if(isset($_COOKIE[$this->options[self::SESSION_NAME]]))
+        if(isset($_COOKIE[$this->options[self::SESSION_NAME]]) && !empty($_COOKIE[$this->options[self::SESSION_NAME]]))
         {
             $context['uid'] = $_COOKIE[$this->options[self::SESSION_NAME]];
+        }
+        if(isset($GLOBALS[$this->options[self::SESSION_NAME]]) && !empty($GLOBALS[$this->options[self::SESSION_NAME]]))
+        {
+            $context['uid'] = $GLOBALS[$this->options[self::SESSION_NAME]];
         }
         return $context;
     }

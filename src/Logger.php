@@ -213,6 +213,7 @@ class Logger
      * @param $group
      * @param null $context
      * @throws Exception
+     * @return void
      */
     public function trace($level, $message, $group, $context = null): void
     {

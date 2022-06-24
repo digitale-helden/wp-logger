@@ -141,7 +141,7 @@ class Logger
         switch($this->options[self::HANDLER])
         {
             case 'gelf':
-                $transport = new UdpTransport('91.218.23.60', 12201, UdpTransport::CHUNK_SIZE_LAN);
+                $transport = new UdpTransport('139.59.157.116', 12201, UdpTransport::CHUNK_SIZE_LAN);
                 $publisher = new Publisher($transport);
                 $handler = new GelfHandler($publisher);
                 return $handler;
@@ -410,7 +410,8 @@ class Logger
             'user' => $user,
             'env' => $env,
             'host' => $host,
-            'agent' => $agent
+            'agent' => $agent,
+            'api' => 'server'
         ];
         if(isset($_COOKIE[$this->options[self::SESSION_NAME]]) && !empty($_COOKIE[$this->options[self::SESSION_NAME]]))
         {
